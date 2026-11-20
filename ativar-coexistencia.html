@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ativar coexistência do WhatsApp — zAPI</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; background:#0D1C33; color:#EFF0F4; margin:0; padding:24px; }
+  .card { max-width:640px; margin:24px auto; background:#12263f; border:1px solid #C1A06B; border-radius:12px; padding:28px; }
+  h1 { font-size:22px; margin:0 0 8px; color:#fff; }
+  p, li { font-size:15px; line-height:1.55; color:#d8dde6; }
+  .gold { color:#C1A06B; }
+  button { background:#C1A06B; color:#0D1C33; border:0; border-radius:8px; font-size:17px; font-weight:bold;
+           padding:14px 22px; cursor:pointer; width:100%; margin:18px 0 6px; }
+  button:hover { opacity:.9; }
+  #resultado { display:none; background:#0a1526; border:1px solid #2c4a73; border-radius:8px; padding:16px; margin-top:16px; }
+  #resultado code { color:#8fd18b; font-size:15px; word-break:break-all; }
+  .erro { color:#ff9c9c; }
+  ol { padding-left:20px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Ativar a coexistência do WhatsApp</h1>
+  <p>Esta página conecta o seu número do <strong>WhatsApp Business</strong> (83 99670-0511) também à API,
+     <span class="gold">sem tirar o número do aplicativo</span>. Antes de começar:</p>
+  <ol>
+    <li>Esteja logado no Facebook com a conta que administra o portfólio <strong>Cassio Bruno</strong> (neste navegador).</li>
+    <li>Esteja com o <strong>celular em mãos</strong>, com o WhatsApp Business aberto no seu número.</li>
+    <li>No fluxo, escolha o portfólio <strong>Cassio Bruno</strong> e a conta <strong>Cassio Bruno Imoveis</strong>.</li>
+    <li>Quando aparecer a opção, escolha <strong>conectar o número que já está no aplicativo WhatsApp Business</strong> e confirme no celular quando ele pedir.</li>
+  </ol>
+  <button onclick="launchWhatsAppSignup()">Conectar meu número do WhatsApp Business</button>
+  <div id="resultado"></div>
+  <p style="font-size:13px;color:#93a1b5">Ao concluir, esta página mostra dois códigos (ID da conta e ID do número).
+     Fotografe a tela final e envie ao Muse para ele concluir a configuração.</p>
+</div>
+
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<script>
+  window.fbAsyncInit = function () {
+    FB.init({ appId: '1068002892987561', autoLogAppEvents: true, xfbml: true, version: 'v21.0' });
+  };
+
+  function mostrar(html) {
+    var r = document.getElementById('resultado');
+    r.style.display = 'block';
+    r.innerHTML = html;
+  }
+
+  // Recebe o resultado do Cadastro Incorporado (IDs da conta e do número)
+  window.addEventListener('message', function (event) {
+    if (!event.origin || !event.origin.endsWith('facebook.com')) return;
+    try {
+      var data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
+      if (data && data.type === 'WA_EMBEDDED_SIGNUP') {
+        if (data.event === 'FINISH' || data.event === 'FINISH_ONLY_WABA') {
+          var d = data.data || {};
+          mostrar('<p><strong>Conectado!</strong> Envie estes códigos ao Muse:</p>' +
+                  '<p>ID da conta (WABA): <code>' + (d.waba_id || '—') + '</code></p>' +
+                  '<p>ID do número: <code>' + (d.phone_number_id || '—') + '</code></p>');
+        } else if (data.event === 'CANCEL') {
+          var passo = (data.data && data.data.current_step) || '';
+          mostrar('<p class="erro">O fluxo foi interrompido' + (passo ? ' na etapa: ' + passo : '') +
+                  '. Nenhuma alteração foi feita. Você pode tentar de novo.</p>');
+        }
+      }
+    } catch (e) { /* mensagens de outras origens/formatos são ignoradas */ }
+  });
+
+  function launchWhatsAppSignup() {
+    FB.login(function () {}, {
+      config_id: '2691191131325699',
+      response_type: 'code',
+      override_default_response_type: true,
+      extras: { feature: 'whatsapp_embedded_signup', sessionInfoVersion: '3', setup: {} }
+    });
+  }
+</script>
+</body>
+</html>
