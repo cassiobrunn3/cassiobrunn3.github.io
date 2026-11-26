@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<title>ChaveEntregue</title>
+<rect x="0" y="0" width="512" height="512" fill="#F6F0E4"/>
+<g transform="translate(49,100) scale(1.15)">
+<path d="M255 32 C220 10 190 0 154 0 C69 0 0 69 0 135 C0 207 66 270 154 270 C191 270 222 258 255 236 L224 205 C203 218 180 229 154 229 C91 229 42 185 42 135 C42 84 91 41 154 41 C181 41 204 50 224 64 Z" fill="#0F3D4C"/>
+<path d="M91 139 L174 76 L218 108 L218 86 L236 86 L236 121 L276 151 L340 151 Q350 151 350 161 Q350 171 340 171 L329 171 L329 191 L314 191 L314 171 L294 171 L294 186 L279 186 L279 171 L260 171 L260 166 L220 136 L174 102 L111 151 Z" fill="#A68555"/>
+<g fill="#0F3D4C">
+<rect x="150" y="151" width="17" height="17" rx="1.5"/>
+<rect x="173" y="151" width="17" height="17" rx="1.5"/>
+<rect x="150" y="174" width="17" height="17" rx="1.5"/>
+<rect x="173" y="174" width="17" height="17" rx="1.5"/>
+</g>
+</g>
+</svg>
